@@ -210,3 +210,50 @@ subjects:
   name: calico-node
   namespace: kube-system
 {{- end }}
+
+{{- if and (eq .Values.datastore "etcd") (eq .Values.network "flannel") }}
+---
+
+apiVersion: rbac.authorization.k8s.io/v1
+kind: ClusterRoleBinding
+metadata:
+  name: canal
+roleRef:
+  apiGroup: rbac.authorization.k8s.io
+  kind: ClusterRole
+  name: canal
+subjects:
+- kind: ServiceAccount
+  name: canal-node
+  namespace: kube-system
+
+---
+
+kind: ClusterRole
+apiVersion: rbac.authorization.k8s.io/v1
+metadata:
+  name: canal
+rules:
+  - apiGroups: [""]
+    resources:
+      - pods
+      - nodes
+      - namespaces
+    verbs:
+      - get
+  # Pod CIDR auto-detection on kubeadm needs access to config maps.
+  - apiGroups: [""]
+    resources:
+      - configmaps
+    verbs:
+      - get
+{{- end }}
+
+---
+
+apiVersion: v1
+kind: ServiceAccount
+metadata:
+  name: {{include "nodeName" . }}
+  namespace: kube-system
+
