@@ -1,0 +1,18 @@
+datastore: kubernetes
+ipam: host-local
+network: notflannel
+typha:
+  enabled: false
+
+cni:
+  image: calico/cni
+  tag: v3.15.2
+flexvol:
+  image: calico/pod2daemon-flexvol
+  tag: v3.15.2
+node:
+  image: calico/node
+  tag: v3.15.2
+kubeControllers:
+  image: calico/kube-controllers
+  tag: v3.15.2

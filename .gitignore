@@ -16,8 +16,5 @@ vendor
 pinned_versions.yml
 pinned_images.yml
 
-# This prevents us from checking in a supplementary values.yaml file
-_includes/charts/*/values.yaml
-
 # ignore changes during local website development
 .jekyll-cache

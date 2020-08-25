@@ -1,27 +1,26 @@
+{{- if eq .Values.datastore "kubernetes" -}}
 
----
 apiVersion: apiextensions.k8s.io/v1
 kind: CustomResourceDefinition
 metadata:
   annotations:
-    controller-gen.kubebuilder.io/version: (devel)
+    meta.helm.sh/release-name: {{ .Release.Name | quote }}
+    meta.helm.sh/release-namespace: {{ .Release.Namespace | quote }}
   creationTimestamp: null
-  name: globalnetworksets.crd.projectcalico.org
+  name: networksets.crd.projectcalico.org
 spec:
   group: crd.projectcalico.org
   names:
-    kind: GlobalNetworkSet
-    listKind: GlobalNetworkSetList
-    plural: globalnetworksets
-    singular: globalnetworkset
-  scope: Cluster
+    kind: NetworkSet
+    listKind: NetworkSetList
+    plural: networksets
+    singular: networkset
+  scope: Namespaced
   versions:
   - name: v1
     schema:
       openAPIV3Schema:
-        description: GlobalNetworkSet contains a set of arbitrary IP sub-networks/CIDRs
-          that share labels to allow rules to refer to them via selectors.  The labels
-          of GlobalNetworkSet are not namespaced.
+        description: NetworkSet is the Namespaced-equivalent of the GlobalNetworkSet.
         properties:
           apiVersion:
             description: 'APIVersion defines the versioned schema of this representation
@@ -36,7 +35,7 @@ spec:
           metadata:
             type: object
           spec:
-            description: GlobalNetworkSetSpec contains the specification for a NetworkSet
+            description: NetworkSetSpec contains the specification for a NetworkSet
               resource.
             properties:
               nets:
@@ -54,3 +53,5 @@ status:
     plural: ""
   conditions: []
   storedVersions: []
+
+{{- end -}}
